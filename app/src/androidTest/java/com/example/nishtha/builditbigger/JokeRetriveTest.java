@@ -13,6 +13,7 @@ public class JokeRetriveTest extends InstrumentationTestCase implements AsyncRes
 
     CountDownLatch signal;
     String joke;
+    EndpointsAsyncTask endpoint;
 
     public JokeRetriveTest() {
 
@@ -22,7 +23,9 @@ public class JokeRetriveTest extends InstrumentationTestCase implements AsyncRes
         try {
             Log.d("hello","heyyy i m done");
             signal = new CountDownLatch(1);
-            new EndpointsAsyncTask().execute();
+            endpoint = new EndpointsAsyncTask();
+            endpoint.delegate = this;
+            endpoint.execute();
             signal.await(30, TimeUnit.SECONDS);
             Log.d("hello","this is joke"+joke);
             assertNotNull("joke is null", joke);
